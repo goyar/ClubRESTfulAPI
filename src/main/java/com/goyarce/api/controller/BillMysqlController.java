@@ -69,17 +69,19 @@ public class BillMysqlController {
         return new BillDetail(bill.get(),chargeList);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/bill")
+    @RequestMapping(method = RequestMethod.POST, value = "/bill/{guardian_id}")
 
     @ResponseBody
-    public Bill getBillsById(@RequestBody Bill bill)
+    public Bill getBillsById(@PathVariable String guardian_id)
             throws ResourceNotFoundException {
 
-        bill.setIssue_date(new Date());
+        Bill newBill = new Bill();
+        newBill.setGuardian_id(guardian_id);
+        newBill.setIssue_date(new Date());
 
-        Iterable<Charge> charges = validator.checkBill(bill);
+        Iterable<Charge> charges = validator.checkBill(newBill);
 
-        Bill savedBill = billRepo.save(bill);
+        Bill savedBill = billRepo.save(newBill);
 
         charges.forEach(charge -> {
             charge.setBill_id(savedBill.getId());
