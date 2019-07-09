@@ -40,7 +40,7 @@ public class BillMysqlController {
         return billList;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/bill/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/bill/{id}/overview")
 
     @ResponseBody
     public Bill getBillsById(@PathVariable Integer id){
