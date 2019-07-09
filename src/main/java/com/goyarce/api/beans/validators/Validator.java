@@ -72,7 +72,7 @@ public class Validator {
             throw new ResourceNotFoundException("Guardian with ID: " + guardian_id + " not found.");
 
         Iterable<Charge> charges = chargeRepo.getChargeByGuardian_id(guardian_id);
-        List<Charge> chargeList = new ArrayList<Charge>();
+        List<Charge> chargeList = new ArrayList<>();
 
         for(Charge charge:charges) {
             chargeList.add(charge);

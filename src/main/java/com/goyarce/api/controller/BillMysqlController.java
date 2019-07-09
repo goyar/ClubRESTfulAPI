@@ -25,12 +25,15 @@ public class BillMysqlController {
     @Autowired
     ChargeRepo chargeRepo;
 
+    @Autowired
+    Validator validator;
+
     @RequestMapping(method = RequestMethod.GET, value = "/bill/allbill")
 
     @ResponseBody
     public List<Bill> getAllBills(){
         Iterable<Bill> bills = billRepo.findAll();
-        List<Bill> billList = new ArrayList<Bill>();
+        List<Bill> billList = new ArrayList<>();
         for(Bill bill:bills){
             billList.add(bill);
         }
@@ -58,17 +61,13 @@ public class BillMysqlController {
 
         Iterable<Charge> charges = chargeRepo.getChargeByBill_id(id);
 
-        List<Charge> chargeList = new ArrayList<Charge>();
+        List<Charge> chargeList = new ArrayList<>();
         for(Charge charge:charges){
             chargeList.add(charge);
         }
 
-        BillDetail detail = new BillDetail(bill.get(),chargeList);
-        return detail;
+        return new BillDetail(bill.get(),chargeList);
     }
-
-    @Autowired
-    Validator validator;
 
     @RequestMapping(method = RequestMethod.POST, value = "/bill")
 

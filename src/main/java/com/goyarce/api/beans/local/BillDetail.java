@@ -11,10 +11,10 @@ import java.util.List;
 public class BillDetail {
 
     @Field("Bill")
-    Bill bill;
+    private Bill bill;
 
     @Field("Charges")
-    List<Charge> chargeList;
+    private List<Charge> chargeList;
 
     public BillDetail(){}
 

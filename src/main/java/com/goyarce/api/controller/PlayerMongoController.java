@@ -1,6 +1,7 @@
 package com.goyarce.api.controller;
 
 import com.goyarce.api.beans.mongo.Player;
+import com.goyarce.api.exceptions.ResourceNotFoundException;
 import com.goyarce.api.repositories.mongo.PlayerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Controller
 public class PlayerMongoController {
 
-    public static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = false;
 
     @Autowired
     PlayerRepo playerRepo;
@@ -36,20 +37,14 @@ public class PlayerMongoController {
     @RequestMapping(method = RequestMethod.GET, value = "/player/{id}")
 
     @ResponseBody
-    public Player getPlayerById(@PathVariable String id){
+    public Player getPlayerById(@PathVariable String id) throws ResourceNotFoundException{
         Optional<Player> result = playerRepo.findById(id);
+        if(!result.isPresent())
+            throw new ResourceNotFoundException("Player ID: " + id + " not found.");
         if(DEBUG){
             System.out.println("/player/" + id + ": " + result.get().toString());
         }
         return result.get();
     }
 
-    /*public String getReqHeadersToString(HttpServletRequest request){
-        String head = "";
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
-            head = head + headerNames.nextElement() + ": " + request.getHeader(headerNames.nextElement()) + '\n';
-        }
-        return head;
-    }*/
 }

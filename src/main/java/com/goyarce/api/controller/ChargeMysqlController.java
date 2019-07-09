@@ -20,12 +20,15 @@ public class ChargeMysqlController {
     @Autowired
     ChargeRepo chargeRepo;
 
+    @Autowired
+    Validator validator;
+
     @RequestMapping(method = RequestMethod.GET, value = "/charge/allcharge")
 
     @ResponseBody
     public List<Charge> getAllCharges(){
         Iterable<Charge> charges = chargeRepo.findAll();
-        List<Charge> chargeList = new ArrayList<Charge>();
+        List<Charge> chargeList = new ArrayList<>();
         for(Charge charge:charges){
             chargeList.add(charge);
         }
@@ -40,9 +43,6 @@ public class ChargeMysqlController {
         if (charge.isPresent()) return charge.get();
         throw new ResourceNotFoundException("Charge with ID: " + id + " not found.");
     }
-
-    @Autowired
-    Validator validator;
 
     @RequestMapping(method = RequestMethod.POST, value = "/charge")
 

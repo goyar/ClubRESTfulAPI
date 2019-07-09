@@ -1,6 +1,7 @@
 package com.goyarce.api.controller;
 
 import com.goyarce.api.beans.mongo.Guardian;
+import com.goyarce.api.exceptions.ResourceNotFoundException;
 import com.goyarce.api.repositories.mongo.GuardianRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Controller
 public class GuardianMongoController {
-    public static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = false;
 
     @Autowired
     GuardianRepo guardianRepo;
@@ -35,9 +36,10 @@ public class GuardianMongoController {
     @RequestMapping(method = RequestMethod.GET, value = "/guardian/{id}")
 
     @ResponseBody
-    public Guardian getGuardianById(@PathVariable String id){
+    public Guardian getGuardianById(@PathVariable String id) throws ResourceNotFoundException{
         Optional<Guardian> result = guardianRepo.findById(id);
-
+        if(!result.isPresent())
+            throw new ResourceNotFoundException("Guardian ID: " + id + " not found.");
         if(DEBUG){
             System.out.println("/guardian/" + id + ": " + result.get().toString());
         }
