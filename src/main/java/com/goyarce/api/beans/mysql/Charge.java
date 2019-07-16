@@ -32,6 +32,28 @@ public class Charge {
     @Column(name="bill_id")
     private Integer bill_id;
 
+    /*public Charge(){
+      super();
+        player_id = "";
+        guardian_id = "";
+        state = "";
+        bill_id = 0;
+    }*/
+
+    public Boolean stateIs(String state){
+        if (this.state == null) return false;
+        if (this.state.equals(state)) return true;
+        return false;
+    }
+    public Boolean idNotNull(){
+        if (this.id == null) return false;
+        return true;
+    }
+    public Boolean billNotNull(){
+        if (this.bill_id == null) return false;
+        return true;
+    }
+
     public Integer getId() {
         return id;
     }

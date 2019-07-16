@@ -63,7 +63,9 @@ public class ChargeMysqlController {
     public Charge updateCharge(@RequestBody Charge charge)
             throws ResourceNotFoundException, InconsistentArgumentsException {
         System.out.println("[PUT]: /charge");
-        return chargeRepo.save(validator.checkCharge(charge, false));
+        validator.checkCharge(charge, false);
+        charge.setState("P");
+        return chargeRepo.save(charge);
     }
 
 }

@@ -44,7 +44,7 @@ public class Validator {
 
             if(!isNew){
 
-                if(charge.getState().equals("B") || charge.getBill_id() != null)
+                if(charge.stateIs("B") || charge.billNotNull())
                     throw new InconsistentArgumentsException("Charge state has to be in pending and not already billed.");
 
                 Optional<Charge> oldCharge = chargeRepo.findById(charge.getId());
@@ -52,10 +52,14 @@ public class Validator {
                 if(!oldCharge.isPresent())
                     throw new ResourceNotFoundException("Charge with ID: " + charge.getId() + " not found.");
 
-                if(oldCharge.get().getState().equals("B"))
+                if(oldCharge.get().stateIs("B"))
                     throw new InconsistentArgumentsException("Charge with ID: " + charge.getId() +
                             " is already billed. It can't be modified.");
+
+            } else if(charge.idNotNull()){
+                throw new InconsistentArgumentsException("Charge id has not to be set for new charges.");
             }
+
             return charge;
         } else {
             throw new InconsistentArgumentsException("Guardian with ID: " + charge.getGuardian_id() +
