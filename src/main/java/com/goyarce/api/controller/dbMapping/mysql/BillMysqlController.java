@@ -1,4 +1,4 @@
-package com.goyarce.api.controller;
+package com.goyarce.api.controller.dbMapping.mysql;
 
 import com.goyarce.api.beans.local.BillDetail;
 import com.goyarce.api.beans.mysql.Bill;
@@ -32,6 +32,7 @@ public class BillMysqlController {
 
     @ResponseBody
     public List<Bill> getAllBills(){
+        System.out.println("[GET]: /bill/allbill");
         Iterable<Bill> bills = billRepo.findAll();
         List<Bill> billList = new ArrayList<>();
         for(Bill bill:bills){
@@ -44,29 +45,11 @@ public class BillMysqlController {
 
     @ResponseBody
     public Bill getBillsById(@PathVariable Integer id){
+        System.out.println("[GET]: /bill/{id}/overview");
         Optional<Bill> bill = billRepo.findById(id);
         if (!bill.isPresent())
             throw new ResourceNotFoundException("Bill with ID: " + id + " not found.");
         return bill.get();
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/bill/{id}/details")
-
-    @ResponseBody
-    public BillDetail getBillsDetails(@PathVariable Integer id){
-
-        Optional<Bill> bill = billRepo.findById(id);
-        if (!bill.isPresent())
-            throw new ResourceNotFoundException("Bill with ID: " + id + " not found.");
-
-        Iterable<Charge> charges = chargeRepo.getChargeByBill_id(id);
-
-        List<Charge> chargeList = new ArrayList<>();
-        for(Charge charge:charges){
-            chargeList.add(charge);
-        }
-
-        return new BillDetail(bill.get(),chargeList);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/bill/{guardian_id}")
@@ -74,7 +57,7 @@ public class BillMysqlController {
     @ResponseBody
     public Bill getBillsById(@PathVariable String guardian_id)
             throws ResourceNotFoundException {
-
+        System.out.println("[POST]: /bill/{guardian_id}");
         Bill newBill = new Bill();
         newBill.setGuardian_id(guardian_id);
         newBill.setIssue_date(new Date());

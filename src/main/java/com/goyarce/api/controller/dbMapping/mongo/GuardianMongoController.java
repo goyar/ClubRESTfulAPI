@@ -1,4 +1,4 @@
-package com.goyarce.api.controller;
+package com.goyarce.api.controller.dbMapping.mongo;
 
 import com.goyarce.api.beans.mongo.Guardian;
 import com.goyarce.api.exceptions.ResourceNotFoundException;
@@ -24,6 +24,7 @@ public class GuardianMongoController {
 
     @ResponseBody
     public List<Guardian> getAllGuardians(){
+        System.out.println("[GET]: /guardian/allguardian");
         List<Guardian> result = guardianRepo.findAll();
         if(DEBUG){
             for(Guardian guardian:result){
@@ -37,6 +38,7 @@ public class GuardianMongoController {
 
     @ResponseBody
     public Guardian getGuardianById(@PathVariable String id) throws ResourceNotFoundException{
+        System.out.println("[GET]: /guardian/{id}");
         Optional<Guardian> result = guardianRepo.findById(id);
         if(!result.isPresent())
             throw new ResourceNotFoundException("Guardian ID: " + id + " not found.");

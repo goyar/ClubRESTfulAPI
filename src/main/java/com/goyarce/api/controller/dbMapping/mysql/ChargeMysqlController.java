@@ -1,4 +1,4 @@
-package com.goyarce.api.controller;
+package com.goyarce.api.controller.dbMapping.mysql;
 
 import com.goyarce.api.beans.mysql.Charge;
 import com.goyarce.api.beans.validators.Validator;
@@ -27,6 +27,7 @@ public class ChargeMysqlController {
 
     @ResponseBody
     public List<Charge> getAllCharges(){
+        System.out.println("[GET]: /charge/allcharge");
         Iterable<Charge> charges = chargeRepo.findAll();
         List<Charge> chargeList = new ArrayList<>();
         for(Charge charge:charges){
@@ -39,6 +40,7 @@ public class ChargeMysqlController {
 
     @ResponseBody
     public Charge getChargeById(@PathVariable Integer id){
+        System.out.println("[GET]: /charge/{id}");
         Optional<Charge> charge = chargeRepo.findById(id);
         if (charge.isPresent()) return charge.get();
         throw new ResourceNotFoundException("Charge with ID: " + id + " not found.");
@@ -49,6 +51,7 @@ public class ChargeMysqlController {
     @ResponseBody
     public Charge addCharge(@RequestBody Charge charge)
             throws ResourceNotFoundException, InconsistentArgumentsException {
+        System.out.println("[POST]: /charge");
         charge.setDate(new Date());
         charge.setState("P");
         return chargeRepo.save(validator.checkCharge(charge, true));
@@ -59,6 +62,7 @@ public class ChargeMysqlController {
     @ResponseBody
     public Charge updateCharge(@RequestBody Charge charge)
             throws ResourceNotFoundException, InconsistentArgumentsException {
+        System.out.println("[PUT]: /charge");
         return chargeRepo.save(validator.checkCharge(charge, false));
     }
 

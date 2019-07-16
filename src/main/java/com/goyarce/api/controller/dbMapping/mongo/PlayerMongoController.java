@@ -1,4 +1,4 @@
-package com.goyarce.api.controller;
+package com.goyarce.api.controller.dbMapping.mongo;
 
 import com.goyarce.api.beans.mongo.Player;
 import com.goyarce.api.exceptions.ResourceNotFoundException;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +23,7 @@ public class PlayerMongoController {
 
     @ResponseBody
     public List<Player> getAllPlayers(HttpServletRequest request){
+        System.out.println("[GET]: /player/allplayer");
         List<Player> result = playerRepo.findAll();
         /*System.out.println(getReqHeadersToString(request));*/
         if(DEBUG){
@@ -38,6 +38,7 @@ public class PlayerMongoController {
 
     @ResponseBody
     public Player getPlayerById(@PathVariable String id) throws ResourceNotFoundException{
+        System.out.println("[GET]: /player/{id}");
         Optional<Player> result = playerRepo.findById(id);
         if(!result.isPresent())
             throw new ResourceNotFoundException("Player ID: " + id + " not found.");

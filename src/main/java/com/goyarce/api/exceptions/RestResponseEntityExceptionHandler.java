@@ -30,9 +30,10 @@ public class RestResponseEntityExceptionHandler
             }
     )
     protected ResponseEntity<Object> handleResourceNotFound(RuntimeException ex, WebRequest request) {
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
         String bodyOfResponse = ex.getMessage();
         System.out.println(bodyOfResponse);
-        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(
@@ -41,8 +42,9 @@ public class RestResponseEntityExceptionHandler
             }
     )
     protected ResponseEntity<Object> handleArgumentsNotConsistent(RuntimeException ex, WebRequest request) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
         String bodyOfResponse = ex.getMessage();
         System.out.println(bodyOfResponse);
-        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }
